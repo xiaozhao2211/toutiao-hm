@@ -24,7 +24,6 @@
 </template>
 
 <script>
-// import { log } from 'util'
 export default {
   data () {
     return {
@@ -48,9 +47,26 @@ export default {
   },
   methods: {
     loginBtn () {
-      this.$refs.myForm.validate(function (isOK) {
+      this.$refs.myForm.validate((isOK) => {
         if (isOK) {
-          console.log('初步成功')
+          // console.log('初步成功')
+          this.$axios({
+            url: '/authorizations',
+            method: 'post',
+            data: this.loginForm
+          }).then(result => {
+            window.localStorage.setItem('user-token', result.data.data.token)
+            // console.log(result)
+            this.$router.push('/home')
+          }).catch(result => {
+            // console.log(result)
+            this.$message(
+              {
+                message: '您的手机号或验证码输入有误',
+                type: 'warning'
+              }
+            )
+          })
         }
       })
     }
