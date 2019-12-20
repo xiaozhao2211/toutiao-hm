@@ -26,7 +26,7 @@
                <el-menu-item index="/home/fan-list">粉丝列表</el-menu-item>
            </el-submenu>
           <el-menu-item>
-            <span slot="title">账户信息</span>
+            <span slot="title" index="/home/userinfo">账户信息</span>
           </el-menu-item>
         </el-menu>
   </div>
@@ -41,6 +41,9 @@ export default {
 <style lang="less" scoped>
 .layout-aside {
     width: 100%;
+    .el-menu {
+       border-right:none;
+     };
     .title {
         background-color: #2e2f32;
          text-align: center;

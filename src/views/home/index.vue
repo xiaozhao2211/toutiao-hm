@@ -2,7 +2,7 @@
 <!-- 外层容器 -->
 <el-container>
     <!-- 左侧边栏导航 -->
-    <el-aside style="height: 100vh;width: 230px;background-color: #323745;">
+    <el-aside style="min-height: 100vh;width: 230px;background-color: #323745;">
         <layout-aside></layout-aside>
     </el-aside>
     <!-- 右侧内容 -->
@@ -11,7 +11,9 @@
         <el-header>
             <layout-header></layout-header>
         </el-header>
-        <el-main>body</el-main>
+        <el-main style="padding:0">
+            <router-view></router-view>
+        </el-main>
     </el-container>
 </el-container>
 
