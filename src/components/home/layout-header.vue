@@ -12,12 +12,12 @@
             </div>
             <span>消息</span>
             <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
-            <el-dropdown>
-               <span>{{userInfo.name}}</span><i class="el-icon-caret-bottom"></i>
+            <el-dropdown  @command="headerCommand">
+               <span >{{userInfo.name}}</span><i class="el-icon-caret-bottom"></i>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>个人信息</el-dropdown-item>
-                <el-dropdown-item>git地址</el-dropdown-item>
-                <el-dropdown-item>退出</el-dropdown-item>
+                <el-dropdown-item command="info">个人信息</el-dropdown-item>
+                <el-dropdown-item command="gitAddress">git地址</el-dropdown-item>
+                <el-dropdown-item command="lgout">退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </el-row>
@@ -32,6 +32,18 @@ export default {
     return {
       userInfo: {},
       defaultImg: require('../../assets/img/header.jpg')
+    }
+  },
+  methods: {
+    headerCommand (command) {
+      if (command === 'info') {
+
+      } else if (command === 'gitAddress') {
+        window.location.href = 'https://github.com/shuiruohanyu/90heimatoutiao'
+      } else {
+        window.localStorage.removeItem('user-token')
+        this.$router.push('/login')
+      }
     }
   },
   created () {
