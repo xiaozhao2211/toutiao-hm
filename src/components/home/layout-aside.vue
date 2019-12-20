@@ -2,7 +2,7 @@
   <div class="layout-aside">
       <el-menu background-color="#353b4e" text-color=" #adafb5" active-text-color=" #ffd04b">
           <div class="title">
-              <img src="../assets/img/logo_admin.png" alt="">
+              <img src="../../assets/img/logo_admin.png" alt="">
           </div>
           <el-menu-item>
             <span slot="title">首页</span>

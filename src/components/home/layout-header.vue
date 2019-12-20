@@ -11,7 +11,7 @@
                 <el-input placeholder="请输入搜索的文章内容" prefix-icon="el-icon-search"></el-input>
             </div>
             <span>消息</span>
-            <img src="../assets/img/header.jpg" alt="">
+            <img src="../../assets/img/header.jpg" alt="">
             <el-dropdown>
                <span>沙雕吕坤</span><i class="el-icon-caret-bottom"></i>
               <el-dropdown-menu slot="dropdown">
