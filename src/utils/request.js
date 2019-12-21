@@ -12,7 +12,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) { // 请求成功执行此函数
   return response.data ? response.data : {}
 }
-, function (error) {
+, function (error) { // 统一处理异常数据
   let status = error.response.status
   let message = ''
   switch (status) {
