@@ -12,8 +12,10 @@
             </div>
             <span>消息</span>
             <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
+            <!-- <img :src="!userInfo.photo?userInfo.photo:defaultImg" alt=""> -->
             <el-dropdown  @command="headerCommand">
                <span >{{userInfo.name}}</span><i class="el-icon-caret-bottom"></i>
+               <!-- <span>沙雕吕坤在看你</span><i class="el-icon-caret-bottom"></i> -->
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="info">个人信息</el-dropdown-item>
                 <el-dropdown-item command="gitAddress">git地址</el-dropdown-item>
