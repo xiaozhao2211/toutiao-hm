@@ -6,5 +6,10 @@ axios.interceptors.request.use(function (config) {
   config.headers.Authorization = `Bearer ${token}`
   return config
 })
-
+// 统一处理响应数据
+axios.interceptors.response.use(function (response) { // 请求成功执行此函数
+  return response.data ? response.data : {}
+}
+, function () {
+})
 export default axios
