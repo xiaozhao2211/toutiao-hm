@@ -4,7 +4,7 @@
       <!-- 插槽内容 -->
       <template slot="title">评论列表</template>
       </bread-crumb>
-       <el-table :data="list">
+       <el-table :data="list" v-loading="loading">
            <el-table-column label="标题" width="580" prop="title"></el-table-column>
            <el-table-column label="评论状态" prop="comment_status" :formatter="formatterBoolean"></el-table-column>
            <el-table-column label="总评论数" prop="total_comment_count"></el-table-column>
@@ -36,7 +36,8 @@ export default {
         pageSize: 10,
         currentPage: 1,
         total: 0
-      }
+      },
+      loading: false
     }
   },
   methods: {
@@ -45,12 +46,14 @@ export default {
       this.getComment()
     },
     getComment () {
+      this.loading = true
       this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
       }).then(result => {
         this.list = result.data.results
         this.page.total = result.data.total_count
+        setTimeout(() => { this.loading = false }, 300)
       })
     },
     formatterBoolean (row, column, cellValue, index) {
