@@ -24,6 +24,14 @@
             </div>
           </el-tab-pane>
         </el-tabs>
+        <el-row type="flex" justify="center" align="middle" style="height:60px">
+         <el-pagination background layout="prev, pager, next"
+          :total="page.total"
+          :page-size="page.pageSize"
+          :current-page="page.currentPage"
+          @current-change="changePage">
+         </el-pagination>
+       </el-row>
   </el-card>
 </template>
 
@@ -32,22 +40,38 @@ export default {
   data () {
     return {
       activeName: 'all',
-      list: []
+      list: [],
+      page: {
+        pageSize: 8,
+        currentPage: 1,
+        total: 0
+      }
     }
   },
   methods: {
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getMaterial()
+    },
     changeTag () {
+      this.page.currentPage = 1
       this.getMaterial()
     },
     // 获取素材方法
     getMaterial () {
       this.$axios({
         url: '/user/images',
-        params: { collect: this.activeName === 'collect' }
+        params: { collect: this.activeName === 'collect',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize }
       }).then(result => {
         this.list = result.data.results
+        this.page.total = result.data.total_count
       })
     }
+  },
+  created () {
+    this.getMaterial()
   }
 }
 </script>
