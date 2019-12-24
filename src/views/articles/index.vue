@@ -34,15 +34,15 @@
         <el-row class='total' type="flex" align="middle">
           <span>共找到n条符合条件的内容</span>
         </el-row>
-        <div class="article-item">
+        <div class="article-item" v-for="item in list" :key="item.id.toString()">
            <div class="left">
-              <img src="../../assets/img/header.jpg" alt="">
+              <img :src="item.cover.images.length?item.cover.images[0]:defaultImg" alt="">
               <div class="info">
-               <span>omg</span>
+               <span>{{item.title}}</span>
                <span>
-                 <el-tag class="tag">标签一</el-tag>
+                 <el-tag class="tag" :type="item.status | filterType">{{item.status | filterStatus}}</el-tag>
                </span>
-               <span class="date">2019-14-24</span>
+               <span class="date">{{item.pubdate}}</span>
               </div>
            </div>
            <div class="right">
@@ -63,10 +63,52 @@ export default {
         channel_id: null, // 默认不选类别
         dateRange: [] // 日期范围
       },
-      channels: []// 接收频道
+      channels: [], // 接收频道
+      list: [], // 接收文章数据
+      defaultImg: require('../../assets/img/header.jpg')
     }
   },
+  filters: {
+    filterStatus (value) {
+      // 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除，不传为全部
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发布'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    },
+    filterType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'success'
+        case 2:
+          return ''
+        case 3:
+          return 'info'
+        default:
+          break
+      }
+    }
+  },
+
   methods: {
+    // 内容列表-请求数据 方法
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(result => {
+        this.list = result.data.results
+      })
+    },
     // 获取文章所有频道
     getChannels () {
       this.$axios({
@@ -78,6 +120,7 @@ export default {
   },
   created () {
     this.getChannels()// 拉取频道数据
+    this.getArticles()// 拉取文章数据
   }
 }
 </script>
