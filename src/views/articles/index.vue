@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card class='articles'>
       <bread-crumb slot="header">
       <!-- 插槽内容 -->
       <template slot="title">内容列表</template>
@@ -28,8 +28,29 @@
            end-placeholder="结束日期">
           </el-date-picker>
         </el-form-item>
-
       </el-form>
+      <!-- 内容列表-页面主体结构 -->
+      <el-card>
+        <el-row class='total' type="flex" align="middle">
+          <span>共找到n条符合条件的内容</span>
+        </el-row>
+        <div class="article-item">
+           <div class="left">
+              <img src="../../assets/img/header.jpg" alt="">
+              <div class="info">
+               <span>omg</span>
+               <span>
+                 <el-tag class="tag">标签一</el-tag>
+               </span>
+               <span class="date">2019-14-24</span>
+              </div>
+           </div>
+           <div class="right">
+              <span><i class="el-icon-edit"></i>修改</span>
+              <span><i class="el-icon-delete"></i>删除</span>
+           </div>
+        </div>
+      </el-card>
   </el-card>
 </template>
 
@@ -61,6 +82,48 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.articles {
+  .total {
+    height: 50px;
+    border-bottom: 1px dashed #ccc;
+  }
+  .article-item {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    .left {
+      display: flex;
+      img {
+        width: 180px;
+        height: 130px;
+        border-radius: 5px;
+      }
+      .info {
+        height: 130px;
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        margin-left: 15px;
+      }
+      .tag {
+        text-align: center;
+        width: 60px;
+      }
+      .date {
+        font-size: 12px;
+        color: #ccc;
+      }
+    }
+    .right {
+      span {
+        font-size:14px;
+        margin-right: 8px;
+        cursor: pointer;
+        font-size: 12px
+      }
+    }
+  }
+}
 </style>
