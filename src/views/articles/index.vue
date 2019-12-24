@@ -50,7 +50,7 @@
            </div>
            <div class="right">
               <span><i class="el-icon-edit"></i>修改</span>
-              <span><i class="el-icon-delete"></i>删除</span>
+              <span @click="delArticle(item.id)"><i class="el-icon-delete"></i>删除</span>
            </div>
         </div>
         <el-row type="flex" justify="center" align="middle" style="height:60px">
@@ -116,6 +116,21 @@ export default {
     }
   },
   methods: {
+    // 删除文章
+    delArticle (id) {
+      this.$confirm('您确定要删除该文章么？').then(() => {
+        this.$axios({
+          url: `/articles/${id.toString()}`,
+          method: 'delete'
+        }).then(result => {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.getChangeCondition()
+        })
+      })
+    },
     // 页码改变
     changePage (newPage) {
       this.page.currentPage = newPage
