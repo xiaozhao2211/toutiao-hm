@@ -7,7 +7,8 @@
       <!-- 页面结构-搜索工具栏 -->
       <el-form style="padding-left:50px">
         <el-form-item label="文章状态:">
-          <el-radio-group v-model="searchForm.status">
+          <!-- 组件监听 -->
+          <el-radio-group v-model="searchForm.status" @change="changeCondition">
             <el-radio :label="5">全部</el-radio>
             <el-radio :label="0">草稿</el-radio>
             <el-radio :label="1">待审核</el-radio>
@@ -16,12 +17,14 @@
          </el-radio-group>
         </el-form-item>
         <el-form-item label="频道列表:">
-          <el-select placeholder="请选择" v-model="searchForm.channel_id">
+          <el-select placeholder="请选择" v-model="searchForm.channel_id" @change="changeCondition">
             <el-option v-for="item in channels" :key="item.id"  :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="时间选择:">
          <el-date-picker
+         value-format="yyyy-MM-dd"
+         @change="changeCondition"
           v-model="searchForm.dateRange"
           type="daterange"
            start-placeholder="开始日期"
@@ -99,12 +102,22 @@ export default {
       }
     }
   },
-
   methods: {
+    // 选择变化监听
+    changeCondition () {
+      let params = {
+        status: this.searchForm.status === 5 ? null : this.searchForm.status, // 状态为5就传，否则传当前状态值
+        channel_id: this.searchForm.channel_id,
+        begin_pubdate: this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null, // 开始时间
+        end_pubdate: this.searchForm.dateRange.length > 1 ? this.searchForm.dateRange[1] : null// 截至时间
+      }
+      this.getArticles(params)
+    },
     // 内容列表-请求数据 方法
-    getArticles () {
+    getArticles (params) {
       this.$axios({
-        url: '/articles'
+        url: '/articles',
+        params
       }).then(result => {
         this.list = result.data.results
       })
