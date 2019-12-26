@@ -12,13 +12,14 @@
           <quill-editor v-model="formData.content" style="height:300px"></quill-editor>
         </el-form-item>
         <el-form-item label="封面" prop="cover" style="margin-top:120px">
-          <el-radio-group v-model="formData.cover.type">
+          <el-radio-group v-model="formData.cover.type" @click="changeType">
             <el-radio :label="1">单图</el-radio>
             <el-radio :label="3">三图</el-radio>
             <el-radio :label="0">无图</el-radio>
             <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
         </el-form-item>
+        <cover-images :list='formData.cover.images'></cover-images>
         <el-form-item label="频道" prop="channel_id">
           <el-select placeholder="请选择" v-model="formData.channel_id">
             <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -71,11 +72,31 @@ export default {
               channel_id: null
             }
           }
+        },
+        // 监听封面变化
+        'formData.cover.type': function () {
+          if (this.formData.cover.type === -1 || this.formData.cover.type === 0) {
+            this.formData.cover.images = []
+          } else if (this.formData.cover.type === 1) {
+            this.formData.cover.images = ['']
+          } else if (this.formData.cover.type === 3) {
+            this.formData.cover.images = ['', '', '']
+          }
         }
       }
     }
   },
   methods: {
+    // 封面type改变
+    changeType () {
+      if (this.formData.cover.type === -1 || this.formData.cover.type === 0) {
+        this.formData.cover.images = []
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = ['']
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', '']
+      }
+    },
     // 获取对应Id的文章
     getArticleById (articleId) {
       this.$axios({
