@@ -54,10 +54,36 @@ export default {
         }],
         content: [{ required: true, message: '文章内容不能为空' }],
         channel_id: [{ required: true, message: '频道不能为空' }]
+      },
+      watch: {
+        $route: function (to, from) {
+          if (to.params.articleId) {
+            // 表示修改文章
+          } else {
+            // 表示发布文章
+            this.formData = {
+              title: '',
+              content: '',
+              cover: {
+                type: 0, // -1:自动，0-无图，1-1张，3-3张
+                images: []
+              },
+              channel_id: null
+            }
+          }
+        }
       }
     }
   },
   methods: {
+    // 获取对应Id的文章
+    getArticleById (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(result => {
+        this.formData = result.data
+      })
+    },
     // 发布文章
     publishAticle (draft) {
       this.$refs.publishForm.validate((isOk) => {
@@ -89,6 +115,8 @@ export default {
   },
   created () {
     this.getChannels()// 拉取所有频道数据
+    let { articleId } = this.$route.params
+    articleId && this.getArticleById(articleId)
   }
 }
 </script>

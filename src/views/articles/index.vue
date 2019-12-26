@@ -71,7 +71,7 @@
               </div>
            </div>
            <div class="right">
-              <span><i class="el-icon-edit"></i>修改</span>
+              <span @click="modifyArticle(item.id)"><i class="el-icon-edit"></i>修改</span>
               <span @click="delArticle(item.id)"><i class="el-icon-delete"></i>删除</span>
            </div>
         </div>
@@ -148,6 +148,10 @@ export default {
     }
   },
   methods: {
+    // 修改文章
+    modifyArticle (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     // 删除文章
     delArticle (id) {
       this.$confirm('您确定要删除该文章么？').then(() => {

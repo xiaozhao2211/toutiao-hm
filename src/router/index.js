@@ -29,7 +29,10 @@ const routes = [{
     component: () => import('../views/articles')
   }, {
     path: 'publish',
-    component: () => import('../views/publish')
+    component: () => import('../views/publish')// 发布文章
+  }, {
+    path: 'publish/:articleId',
+    component: () => import('../views/publish')// 修改文章
   }]
 },
 {
