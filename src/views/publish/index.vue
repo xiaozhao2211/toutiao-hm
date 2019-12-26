@@ -89,15 +89,16 @@ export default {
       this.$refs.publishForm.validate((isOk) => {
         if (isOk) {
           // console.log('ok')
+          let { articleId } = this.$route.params
           this.$axios({
-            url: '/articles',
-            method: 'post',
+            url: articleId ? `/articles/${articleId}` : '/articles',
+            method: articleId ? 'put' : 'post',
             params: { draft },
             data: this.formData
           }).then(result => {
             this.$message({
               type: 'success',
-              message: '保存成功'
+              message: '成功存入'
             })
             this.$router.push('/home/articles')
           })
