@@ -7,8 +7,16 @@
       <!-- 页面结构-搜索工具栏 -->
       <el-form style="padding-left:50px">
         <el-form-item label="文章状态:">
-          <!-- 组件监听 -->
-          <el-radio-group v-model="searchForm.status" @change="changeCondition">
+          <!--  第一种 组件监听 -->
+          <!-- <el-radio-group v-model="searchForm.status" @change="changeCondition">
+            <el-radio :label="5">全部</el-radio>
+            <el-radio :label="0">草稿</el-radio>
+            <el-radio :label="1">待审核</el-radio>
+            <el-radio :label="2">审核通过</el-radio>
+            <el-radio :label="3">审核失败</el-radio>
+         </el-radio-group> -->
+        <!-- 第二种 watch 监听 -->
+         <el-radio-group v-model="searchForm.status">
             <el-radio :label="5">全部</el-radio>
             <el-radio :label="0">草稿</el-radio>
             <el-radio :label="1">待审核</el-radio>
@@ -17,14 +25,28 @@
          </el-radio-group>
         </el-form-item>
         <el-form-item label="频道列表:">
-          <el-select placeholder="请选择" v-model="searchForm.channel_id" @change="changeCondition">
+          <!--  第一种 组件监听 -->
+          <!-- <el-select placeholder="请选择" v-model="searchForm.channel_id" @change="changeCondition">
+            <el-option v-for="item in channels" :key="item.id"  :label="item.name" :value="item.id"></el-option>
+          </el-select> -->
+          <!-- 第二种 watch 监听 -->
+          <el-select placeholder="请选择" v-model="searchForm.channel_id">
             <el-option v-for="item in channels" :key="item.id"  :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="时间选择:">
-         <el-date-picker
+          <!--  第一种 组件监听 -->
+         <!-- <el-date-picker
          value-format="yyyy-MM-dd"
          @change="changeCondition"
+          v-model="searchForm.dateRange"
+          type="daterange"
+           start-placeholder="开始日期"
+           end-placeholder="结束日期">
+          </el-date-picker> -->
+          <!-- 第二种 watch 监听 -->
+          <el-date-picker
+         value-format="yyyy-MM-dd"
           v-model="searchForm.dateRange"
           type="daterange"
            start-placeholder="开始日期"
@@ -82,6 +104,16 @@ export default {
         currentPage: 1,
         total: 0
       }
+    }
+  },
+  // watch 监听条件改变
+  watch: {
+    searchForm: {
+      handler: function () {
+        // alert(this.searchForm.status)
+        this.changeCondition()
+      },
+      deep: true
     }
   },
   filters: {
@@ -148,8 +180,8 @@ export default {
         per_page: this.page.pageSize,
         status: this.searchForm.status === 5 ? null : this.searchForm.status, // 状态为5就传，否则传当前状态值
         channel_id: this.searchForm.channel_id,
-        begin_pubdate: this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null, // 开始时间
-        end_pubdate: this.searchForm.dateRange.length > 1 ? this.searchForm.dateRange[1] : null// 截至时间
+        begin_pubdate: this.searchForm.dateRange && this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null, // 开始时间
+        end_pubdate: this.searchForm.dateRange && this.searchForm.dateRange.length > 1 ? this.searchForm.dateRange[1] : null// 截至时间
       }
       this.getArticles(params)
     },
