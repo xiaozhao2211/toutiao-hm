@@ -18,7 +18,7 @@
             <el-radio :label="0">无图</el-radio>
             <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
-            <cover-images :list='formData.cover.images'></cover-images>
+            <cover-images :list='formData.cover.images' @selectTwoImg="receiveImg"></cover-images>
         </el-form-item>
 
         <el-form-item label="频道" prop="channel_id">
@@ -89,6 +89,10 @@ export default {
     // }
   },
   methods: {
+    // 接收cover-images组件传值
+    receiveImg (url, index) {
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? url : item)
+    },
     // 封面type改变
     changeType () {
       if (this.formData.cover.type === -1 || this.formData.cover.type === 0) {

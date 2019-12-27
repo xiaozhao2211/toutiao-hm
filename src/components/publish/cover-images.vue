@@ -1,10 +1,10 @@
 <template>
   <div class="cover-image" >
-      <div class='cover-image-item' @click="openDialog" v-for="(item,index) in list" :key="index">
+      <div class='cover-image-item' @click="openDialog(index)" v-for="(item,index) in list" :key="index">
           <img :src="item?item:defaultImg" alt="">
       </div>
-      <el-dialog title="提示" :visible="dialogVisible" @close="closeDialog">
-          <!-- <el-button  @click="closeDialog" type="primary">关闭</el-button> -->
+      <el-dialog :visible="dialogVisible" @close="closeDialog">
+        <select-image @selectOneImg="receiveImg"></select-image>
       </el-dialog>
   </div>
 </template>
@@ -15,12 +15,19 @@ export default {
   data () {
     return {
       defaultImg: require('../../assets/img/collect_select.png'),
-      dialogVisible: false // 用来控制弹层的开关
+      dialogVisible: false, // 用来控制弹层的开关
+      selectIndex: -1 // 用来存储点击的哪个图片的下标
     }
   },
   methods: {
-    openDialog () {
+    // 接收select-image组件传递值
+    receiveImg (url) {
+      this.$emit('selectTwoImg', url, this.selectIndex)
+      this.closeDialog() // 关闭弹层
+    },
+    openDialog (index) {
       this.dialogVisible = true
+      this.selectIndex = index // 记录当前点击的是哪个图片
     },
     closeDialog () {
       this.dialogVisible = false // 关闭弹层
