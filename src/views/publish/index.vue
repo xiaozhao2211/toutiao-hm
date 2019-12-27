@@ -12,14 +12,15 @@
           <quill-editor v-model="formData.content" style="height:300px"></quill-editor>
         </el-form-item>
         <el-form-item label="封面" prop="cover" style="margin-top:120px">
-          <el-radio-group v-model="formData.cover.type" @click="changeType">
+          <el-radio-group v-model="formData.cover.type" @change="changeType">
             <el-radio :label="1">单图</el-radio>
             <el-radio :label="3">三图</el-radio>
             <el-radio :label="0">无图</el-radio>
             <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
+            <cover-images :list='formData.cover.images'></cover-images>
         </el-form-item>
-        <cover-images :list='formData.cover.images'></cover-images>
+
         <el-form-item label="频道" prop="channel_id">
           <el-select placeholder="请选择" v-model="formData.channel_id">
             <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -55,36 +56,37 @@ export default {
         }],
         content: [{ required: true, message: '文章内容不能为空' }],
         channel_id: [{ required: true, message: '频道不能为空' }]
-      },
-      watch: {
-        $route: function (to, from) {
-          if (to.params.articleId) {
-            // 表示修改文章
-          } else {
-            // 表示发布文章
-            this.formData = {
-              title: '',
-              content: '',
-              cover: {
-                type: 0, // -1:自动，0-无图，1-1张，3-3张
-                images: []
-              },
-              channel_id: null
-            }
-          }
-        },
-        // 监听封面变化
-        'formData.cover.type': function () {
-          if (this.formData.cover.type === -1 || this.formData.cover.type === 0) {
-            this.formData.cover.images = []
-          } else if (this.formData.cover.type === 1) {
-            this.formData.cover.images = ['']
-          } else if (this.formData.cover.type === 3) {
-            this.formData.cover.images = ['', '', '']
-          }
+      }
+
+    }
+  },
+  watch: {
+    $route: function (to, from) {
+      if (to.params.articleId) {
+        // 表示修改文章
+      } else {
+        // 表示发布文章
+        this.formData = {
+          title: '',
+          content: '',
+          cover: {
+            type: 0, // -1:自动，0-无图，1-1张，3-3张
+            images: []
+          },
+          channel_id: null
         }
       }
     }
+    // 监听封面变化
+    // 'formData.cover.type': function () {
+    //   if (this.formData.cover.type === -1 || this.formData.cover.type === 0) {
+    //     this.formData.cover.images = []
+    //   } else if (this.formData.cover.type === 1) {
+    //     this.formData.cover.images = ['']
+    //   } else if (this.formData.cover.type === 3) {
+    //     this.formData.cover.images = ['', '', '']
+    //   }
+    // }
   },
   methods: {
     // 封面type改变

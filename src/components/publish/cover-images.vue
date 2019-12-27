@@ -8,13 +8,13 @@
       </el-dialog>
   </div>
 </template>
-r
+
 <script>
 export default {
   props: ['list'],
   data () {
     return {
-      defaultImg: require('../../assets/img/home_img.jpg'),
+      defaultImg: require('../../assets/img/collect_select.png'),
       dialogVisible: false // 用来控制弹层的开关
     }
   },
@@ -37,6 +37,7 @@ export default {
         width: 250px;
         height: 250px;
         border: 1px solid #ccc;
+        padding: 20px;
         img {
             width: 100%;
             height: 100%;
