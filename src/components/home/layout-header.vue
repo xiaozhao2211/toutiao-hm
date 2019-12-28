@@ -39,7 +39,7 @@ export default {
   methods: {
     headerCommand (command) {
       if (command === 'info') {
-
+        this.$router.push('/home/account')
       } else if (command === 'gitAddress') {
         window.location.href = 'https://github.com/shuiruohanyu/90heimatoutiao'
       } else {
