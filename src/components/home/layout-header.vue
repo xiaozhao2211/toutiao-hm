@@ -2,7 +2,7 @@
   <div>
     <el-row class="layout-header" type="flex" align="middle">
         <el-col :span="12" class="left">
-          <i class="el-icon-s-unfold"></i>
+          <i @click="collapseOrOpen" :class="{'el-icon-s-unfold':collapse,'el-icon-s-fold': !collapse}"></i>
           <span>江苏传智播客教育科技股份有限公司</span>
         </el-col>
         <el-col :span="12" class="right">
@@ -34,10 +34,16 @@ export default {
   data () {
     return {
       userInfo: {},
-      defaultImg: require('../../assets/img/header.jpg')
+      defaultImg: require('../../assets/img/header.jpg'),
+      collapse: false// 默认为展开
     }
   },
   methods: {
+    // 侧边展开或关闭方法
+    collapseOrOpen () {
+      this.collapse = !this.collapse// 展开或折叠
+      eventBus.$emit('changeCollapse')// 触发展开或折叠事件
+    },
     // 获取用户信息方法
     getUserInfo () {
       // let token = localStorage.getItem('user-token')
