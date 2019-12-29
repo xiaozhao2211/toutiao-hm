@@ -86,39 +86,35 @@ export default {
       this.clickIndex = index
     },
     // 删除图片
-    delImg (id) {
-      this.$confirm('你确定要删除么？').then(() => {
-        this.$axios({
-          url: `/user/images/${id}`,
-          method: 'delete'
-        }).then(result => {
-          this.getMaterial()
-        })
+    async delImg (id) {
+      await this.$confirm('你确定要删除么？')
+      await this.$axios({
+        url: `/user/images/${id}`,
+        method: 'delete'
       })
+      this.getMaterial()
     },
     // 图片收藏
-    collectOrNo (item) {
-      this.$axios({
+    async collectOrNo (item) {
+      await this.$axios({
         url: `user/images/${item.id}`,
         method: 'put',
         data: { collect: !item.is_collected }
-      }).then(result => {
-        this.getMaterial()
       })
+      this.getMaterial()
     },
     // 上传图片方法
-    uploadImg (params) {
+    async uploadImg (params) {
       this.loading = true
       let data = new FormData()
       data.append('image', params.file)
-      this.$axios({
+      await this.$axios({
         url: '/user/images',
         method: 'post',
         data
-      }).then(result => {
-        this.loading = false
-        this.getMaterial()
       })
+      this.loading = false
+      this.getMaterial()
     },
     // 改变页码方法
     changePage (newPage) {
@@ -131,18 +127,17 @@ export default {
       this.getMaterial()
     },
     // 获取素材方法
-    getMaterial () {
-      this.$axios({
+    async getMaterial () {
+      let result = await this.$axios({
         url: '/user/images',
         params: {
           collect: this.activeName === 'collect', // 传false是获取所有的数据 传true是获取收藏数据
           page: this.page.currentPage,
           per_page: this.page.pageSize
         }
-      }).then(result => {
-        this.list = result.data.results
-        this.page.total = result.data.total_count // 总条数
       })
+      this.list = result.data.results
+      this.page.total = result.data.total_count // 总条数
     }
   },
   created () {

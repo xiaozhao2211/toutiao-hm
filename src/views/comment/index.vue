@@ -45,32 +45,31 @@ export default {
       this.page.currentPage = newPage
       this.getComment()
     },
-    getComment () {
+    // 获取评论方法
+    async getComment () {
       this.loading = true
-      this.$axios({
+      let result = await this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
-      }).then(result => {
-        this.list = result.data.results
-        this.page.total = result.data.total_count
-        this.loading = false
       })
+      this.list = result.data.results
+      this.page.total = result.data.total_count
+      this.loading = false
     },
     formatterBoolean (row, column, cellValue, index) {
       return cellValue ? '正常' : '关闭'
     },
-    openOrCloseState (row) {
+    // 打开或关闭评论方法
+    async openOrCloseState (row) {
       let mess = row.comment_status ? '关闭' : '打开'
-      this.$confirm(`您是否确定要${mess}评论吗`, '提示').then(() => {
-        this.$axios({
-          method: 'put',
-          url: '/comments/status',
-          params: { article_id: row.id.toString() },
-          data: { allow_comment: !row.comment_status }
-        }).then(result => {
-          this.getComment()
-        })
+      await this.$confirm(`您是否确定要${mess}评论吗`, '提示')
+      await this.$axios({
+        method: 'put',
+        url: '/comments/status',
+        params: { article_id: row.id.toString() },
+        data: { allow_comment: !row.comment_status }
       })
+      this.getComment()
     }
   },
   created () {

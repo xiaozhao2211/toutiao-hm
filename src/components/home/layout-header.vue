@@ -45,14 +45,13 @@ export default {
       eventBus.$emit('changeCollapse')// 触发展开或折叠事件
     },
     // 获取用户信息方法
-    getUserInfo () {
+    async getUserInfo () {
       // let token = localStorage.getItem('user-token')
-      this.$axios({
+      let result = await this.$axios({
         url: '/user/profile'
       // headers: { Authorization: `Bearer ${token}` }
-      }).then(result => {
-        this.userInfo = result.data
       })
+      this.userInfo = result.data
     },
     headerCommand (command) {
       if (command === 'info') {

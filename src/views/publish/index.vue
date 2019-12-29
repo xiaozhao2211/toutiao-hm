@@ -104,41 +104,38 @@ export default {
       }
     },
     // 获取对应Id的文章
-    getArticleById (articleId) {
-      this.$axios({
+    async getArticleById (articleId) {
+      let result = await this.$axios({
         url: `/articles/${articleId}`
-      }).then(result => {
-        this.formData = result.data
       })
+      this.formData = result.data
     },
     // 发布文章
     publishAticle (draft) {
-      this.$refs.publishForm.validate((isOk) => {
+      this.$refs.publishForm.validate(async (isOk) => {
         if (isOk) {
           // console.log('ok')
           let { articleId } = this.$route.params
-          this.$axios({
+          await this.$axios({
             url: articleId ? `/articles/${articleId}` : '/articles',
             method: articleId ? 'put' : 'post',
             params: { draft },
             data: this.formData
-          }).then(result => {
-            this.$message({
-              type: 'success',
-              message: '成功存入'
-            })
-            this.$router.push('/home/articles')
           })
+          this.$message({
+            type: 'success',
+            message: '成功存入'
+          })
+          this.$router.push('/home/articles')
         }
       })
     },
     // 获取所有频道
-    getChannels () {
-      this.$axios({
+    async getChannels () {
+      let result = await this.$axios({
         url: '/channels'
-      }).then(result => {
-        this.channels = result.data.channels
       })
+      this.channels = result.data.channels
     }
   },
   created () {

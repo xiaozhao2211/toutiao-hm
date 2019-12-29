@@ -56,41 +56,37 @@ export default {
   },
   methods: {
     // 上传头像方法
-    uploadImg (params) {
+    async uploadImg (params) {
       let data = new FormData()
       data.append('photo', params.file)
-      this.$axios({
+      let result = await this.$axios({
         url: '/user/photo',
         method: 'patch',
         data
-      }).then(result => {
-        this.formData.photo = result.data.photo
-        eventBus.$emit('updateUserInfo')
       })
+      this.formData.photo = result.data.photo
+      eventBus.$emit('updateUserInfo')
     },
     // 存储用户信息方法(手动校验)
-    saveUserInfo () {
-      this.$refs.myForm.validate().then(result => {
-        this.$axios({
-          url: '/user/profile',
-          method: 'patch',
-          data: this.formData
-        }).then(result => {
-          this.$message({
-            type: 'success',
-            message: '保存用户信息成功'
-          })
-          eventBus.$emit('updateUserInfo')
-        })
+    async saveUserInfo () {
+      await this.$refs.myForm.validate()
+      await this.$axios({
+        url: '/user/profile',
+        method: 'patch',
+        data: this.formData
       })
+      this.$message({
+        type: 'success',
+        message: '保存用户信息成功'
+      })
+      eventBus.$emit('updateUserInfo')
     },
     // 获取用户信息方法
-    getUserInfo () {
-      this.$axios({
+    async getUserInfo () {
+      let result = await this.$axios({
         url: '/user/profile'
-      }).then(result => {
-        this.formData = result.data
       })
+      this.formData = result.data
     }
   },
   created () {

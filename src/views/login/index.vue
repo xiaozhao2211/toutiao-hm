@@ -47,27 +47,15 @@ export default {
   },
   methods: {
     loginBtn () {
-      this.$refs.myForm.validate((isOK) => {
+      this.$refs.myForm.validate(async (isOK) => {
         if (isOK) {
-          // console.log('初步成功')
-          this.$axios({
+          let result = await this.$axios({
             url: '/authorizations',
             method: 'post',
             data: this.loginForm
-          }).then(result => {
-            window.localStorage.setItem('user-token', result.data.token)
-            // console.log(result)
-            this.$router.push('/home')
           })
-          // .catch(result => {
-          //   // console.log(result)
-          //   this.$message(
-          //     {
-          //       message: '您的手机号或验证码输入有误',
-          //       type: 'warning'
-          //     }
-          //   )
-          // })
+          window.localStorage.setItem('user-token', result.data.token)
+          this.$router.push('/home')
         }
       })
     }
