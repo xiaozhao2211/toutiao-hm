@@ -53,7 +53,7 @@ export default {
       }).then(result => {
         this.list = result.data.results
         this.page.total = result.data.total_count
-        setTimeout(() => { this.loading = false }, 300)
+        this.loading = false
       })
     },
     formatterBoolean (row, column, cellValue, index) {
