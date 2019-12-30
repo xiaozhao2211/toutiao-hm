@@ -39,6 +39,10 @@ const routes = [{
   }, {
     path: 'account',
     component: () => import('../views/account')// 账户信息
+  },
+  {
+    path: 'graphic-data',
+    component: () => import('../views/graphic-data')// 图文数据
   }]
 },
 {

@@ -50,7 +50,7 @@
     </el-row>
     <el-dialog :visible="dialogVisible" @close="dialogVisible = false" @opened="openEnd" >
       <el-carousel :interval="2000" type="card" height="400px" ref="myCarosel" >
-        <el-carousel-item v-for="item in list" :key="item">
+        <el-carousel-item v-for="item in list" :key="item.id">
           <img :src="item.url" alt="" style="width:100%;height:100%">
         </el-carousel-item>
       </el-carousel>
